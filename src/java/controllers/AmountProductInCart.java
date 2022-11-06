@@ -49,7 +49,7 @@ public class AmountProductInCart extends HttpServlet {
         req.getSession().setAttribute("t", sc.getToltalMoney());
         req.getSession().setAttribute("cast", sc);
         req.getSession().setAttribute("size", list.size());
-        req.getRequestDispatcher("cart.jsp").forward(req, resp);
+        resp.sendRedirect("cart.jsp");
     }
 
 }

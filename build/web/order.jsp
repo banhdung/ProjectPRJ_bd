@@ -14,9 +14,9 @@
         <div id="content-main-dashboard">
             <div id="order-title">
                 <b>Filter by Order date:</b>
-                <form action="OrderManager" method="post">
+                <form action="filterdate" method="post">
                     From: <input type="date" name="txtStartOrderDate" value="${txtStartOrderDate}"  max="<%=date%>"/>
-                    To: <input type="date" name="txtEndOrderDate" value="${txtEndOrderDate}>"/>
+                    To:   <input type="date" name="txtEndOrderDate"  value="${txtEndOrderDate}" />
                     <input type="submit" value="Filter">
                 </form>
             </div>
@@ -80,6 +80,9 @@
                     </div>
                 </div>
             </c:if>
+                    
+                    
+                                      
         </div>
     </div>
 </div>

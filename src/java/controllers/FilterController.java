@@ -22,7 +22,9 @@ public class FilterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("cateID"));
-        ArrayList<Product> listProduct = new ProductDAO().SerachProductByCateID(id);
+        String txtSearch = req.getParameter("txtSearch");
+        req.setAttribute("txtSearch", txtSearch);
+        ArrayList<Product> listProduct = new ProductDAO().SerachandFilter(id,txtSearch);
         req.setAttribute("product", listProduct);
         ArrayList<Categories> listCate = new CategoriesDAO().getCategories();
         req.setAttribute("category", listCate);

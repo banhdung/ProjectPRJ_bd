@@ -27,10 +27,6 @@
         <div id="cart-title">
             <h3>SHOPPING CART</h3>
         </div>
-        <c:if test="${sessionScope.size ==0 }">
-            <%--<c:redirect url="CartEmpty.jsp"></c:redirect>--%>
-
-        </c:if> 
         <div id="cart-content">
             <div class="cart-item">
                 <div style="color:green ; margin-left: 100px" >${messOrderProduct}</div>
@@ -106,7 +102,7 @@
                 <div id="cart-summary">
                     <div id="cart-summary-content">
                         <c:choose>
-                            <c:when test="${t != 0 and sessionScope.cart != null and sessionScope.size != 0}">
+                            <c:when test="${t != 0 and sessionScope.size != 0}">
                                 Total amount: 
                                 <span style="color:red">
                                     <c:out value="${t}"/> $

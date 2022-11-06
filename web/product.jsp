@@ -7,7 +7,7 @@
                                 <div id="product-title-1" style="width: 25%;">
                                     <b>Filter by Catetory:</b>
                                     <form action="filter" method="post">
-
+                                        <input type="hidden" name="txtSearch" value="${txtSearch}"/>
                                         <select name="cateID">
                                             <c:forEach items="${category}" var="c">
                                                 <option value="${c.getCategoryID()}" ${id eq c.getCategoryID()?"selected":"" }>${c.getCategoryName()}</option>

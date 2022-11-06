@@ -133,7 +133,7 @@ public class OrderDAO extends DBContext {
         }
         return li;
     }
-    
+
     public ArrayList<Orders> getListOrders() {
         ArrayList<Orders> list = new ArrayList<>();
         try {
@@ -161,15 +161,20 @@ public class OrderDAO extends DBContext {
         }
         return list;
     }
-    
-    
-    public ArrayList<Orders> getListOrderByDate(String start, String end) {
+
+    public ArrayList<Orders> FilterDate(int page, int elements, String startdate, String end) {
         ArrayList<Orders> list = new ArrayList<>();
+        int start = page * elements - elements;
         try {
-            String sql = "select * from Orders o where o.OrderDate between ? and ?";
+            String sql = "select * from Orders o where o.OrderDate between ? and ? order by o.OrderID desc OFFSET ? ROWS \n"
+                    + "FETCH NEXT ? ROWS ONLY ";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, start);
+            ps.setString(1, startdate);
             ps.setString(2, end);
+            ps.setInt(3, start);
+            ps.setInt(4, elements);
+            
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int OrderID = rs.getInt("OrderID");
@@ -193,7 +198,38 @@ public class OrderDAO extends DBContext {
         return list;
     }
     
-     public void cancelOrderByID(int oid) {
+    public ArrayList<Orders> getListOrderByDate(String startdate, String end) {
+        ArrayList<Orders> list = new ArrayList<>();
+     
+        try {
+            String sql = "select * from Orders o where o.OrderDate between ? and ? order by o.OrderID desc ";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, startdate);
+            ps.setString(2, end);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int OrderID = rs.getInt("OrderID");
+                String CustomerID = rs.getString("CustomerID");
+                int EmployeeID = rs.getInt("EmployeeID");
+                Date OrderDate = rs.getDate("OrderDate");
+                Date RequiredDate = rs.getDate("RequiredDate");
+                Date ShippedDate = rs.getDate("ShippedDate");
+                double Freight = rs.getDouble("Freight");
+                String ShipName = rs.getString("ShipName");
+                String ShipAddress = rs.getString("ShipAddress");
+                String ShipCity = rs.getString("ShipCity");
+                String ShipRegion = rs.getString("ShipRegion");
+                String ShipPostalCode = rs.getString("ShipPostalCode");
+                String ShipCountry = rs.getString("ShipCountry");
+                list.add(new Orders(OrderID, CustomerID, EmployeeID, OrderDate, RequiredDate, ShippedDate, Freight, ShipName, ShipAddress, ShipCity, ShipRegion, ShipPostalCode, ShipCountry));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public void cancelOrderByID(int oid) {
         String sql = "update orders set [RequiredDate] = null where OrderID = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -203,9 +239,8 @@ public class OrderDAO extends DBContext {
             System.out.println(e);
         }
     }
-     
-     
-     public ArrayList<Order_Detail> getAllOrder_Details() {
+
+    public ArrayList<Order_Detail> getAllOrder_Details() {
         ArrayList<Order_Detail> ordetail = new ArrayList<>();
 
         try {
@@ -227,9 +262,8 @@ public class OrderDAO extends DBContext {
 
         return ordetail;
     }
-     
-     
-     public ArrayList<Orders> getOrderByPage(int page, int elements) {
+
+    public ArrayList<Orders> getOrderByPage(int page, int elements) {
         ArrayList<Orders> orders = new ArrayList<>();
         int start = page * elements - elements;
         try {
@@ -252,19 +286,20 @@ public class OrderDAO extends DBContext {
                 o.setFreight(rs.getDouble(7));
                 o.setShipName(rs.getString(8));
                 o.setShipAddress(rs.getString(9));
-                orders.add(o);      
+                orders.add(o);
             }
         } catch (Exception e) {
         }
         return orders;
     }
-     
-      public int countOrderByMonth(int month) {
+
+    public int countOrderByMonth(int month, int year) {
         try {
             String sql = "SELECT count(*) from Orders \n"
-                    + "where MONTH(OrderDate) = ?";
+                    + "where MONTH(OrderDate) = ? and YEAR(OrderDate) = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, month);
+            ps.setInt(2, year);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return rs.getInt(1);
@@ -273,8 +308,33 @@ public class OrderDAO extends DBContext {
         }
         return 0;
     }
-     
-    public static void main(String[] args) {
 
+    public ArrayList<Order_Detail> getWeeklySaleByOrdDet() {
+        ArrayList<Order_Detail> ord = new ArrayList<>();
+        LocalDate curD = java.time.LocalDate.now();
+        String date = curD.toString();
+        try {
+            String sql = "select od.OrderID, od.ProductID, od.UnitPrice, od.Quantity, od.Discount from [Order Details]  od\n"
+                    + "join Orders o\n"
+                    + "on o.OrderID = od.OrderID\n"
+                    + "where ? - o.OrderDate < 7";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, date);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int OrderID = rs.getInt("OrderID");
+                int ProductID = rs.getInt("ProductID");
+                double UnitPrice = rs.getDouble("UnitPrice");
+                int Quantity = rs.getInt("Quantity");
+                double Discount = rs.getDouble("Discount");
+                Order_Detail ordt = new Order_Detail(OrderID, ProductID, UnitPrice, Quantity, Discount);
+                ord.add(ordt);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return ord;
     }
+
 }

@@ -92,6 +92,14 @@
         <servlet-name>OrderCancel</servlet-name>
         <servlet-class>controllers.LoadCancelOrderByUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>orderyear</servlet-name>
+        <servlet-class>controllers.OrderByYear</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>filterdate</servlet-name>
+        <servlet-class>controllers.FilterDateAdmin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AccountLoginControllers</servlet-name>
         <url-pattern>/account/signin</url-pattern>
@@ -184,18 +192,25 @@
         <servlet-name>OrderCancel</servlet-name>
         <url-pattern>/OrderCancelByUser</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>orderyear</servlet-name>
+        <url-pattern>/OrderYearDash</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filterdate</servlet-name>
+        <url-pattern>/filterdate</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-<!--       <error-page>       
-        <error-code>404</error-code> 
-        <location>/errorPage.jsp</location> 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errorPage.jsp</location>
     </error-page>
-    
-    <error-page>       
-        <error-code>500</error-code> 
-        <location>/errorPage.jsp</location> 
-    </error-page>-->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errorPage.jsp</location>
+    </error-page>
 </web-app>

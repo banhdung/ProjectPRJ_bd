@@ -21,17 +21,7 @@ public class AllOrderAdmin extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        try {
-            String txtStartOrderDate = req.getParameter("txtStartOrderDate");
-            String txtEndOrderDate = req.getParameter("txtEndOrderDate");
-            req.setAttribute("txtStartOrderDate", txtStartOrderDate);
-            req.setAttribute("txtEndOrderDate", txtEndOrderDate);
-            ArrayList<Orders> list = new OrderDAO().getListOrderByDate(txtStartOrderDate, txtEndOrderDate);
-            req.getSession().setAttribute("listAll", list);
-            req.getRequestDispatcher("order.jsp").forward(req, resp);
-        } catch (ServletException | IOException e) {
-        }
+        
     }
 
     @Override
@@ -48,7 +38,7 @@ public class AllOrderAdmin extends HttpServlet {
             ArrayList<Orders> orders = new OrderDAO().getOrderByPage(page, elements);
             int numberOfPage = dao.getListOrders().size() % elements == 0 ? dao.getListOrders().size() / elements : dao.getListOrders().size() / elements + 1;
             req.setAttribute("page", page);
-            req.setAttribute("numberOfPage", numberOfPage);       
+            req.setAttribute("numberOfPage", numberOfPage);
             req.setAttribute("listAll", orders);
             req.getRequestDispatcher("order.jsp").forward(req, resp);
         } catch (Exception e) {

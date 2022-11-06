@@ -255,6 +255,38 @@ public class ProductDAO extends DBContext {
         }
         return products;
     }
+    
+    public ArrayList<Product> SerachandFilter(int CateID , String txtSearch) {
+        ArrayList<Product> products = new ArrayList<Product>();
+        try {
+            String sql = "select * from products where CategoryID =  ? and ProductName like  ?;";
+            // B2: Tao doi tuong PrepareStatement
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, CateID);
+            ps.setString(2, "%"+txtSearch+"%");
+            // B3: Thuc thi truy van
+            ResultSet rs = ps.executeQuery();
+            // B4: Xu ly ket qua tra ve
+            while (rs.next()) {
+                // Lay du lieu tu 'rs' gan cho cac bien cuc bo
+                int ProductID = rs.getInt("ProductID");
+                String ProductName = rs.getString("ProductName");
+                int CategoryID = rs.getInt("CategoryID");
+                String QuantityPerUnit = rs.getString("QuantityPerUnit");
+                double UnitPrice = rs.getDouble("UnitPrice");
+                int UnitsInStock = rs.getInt("UnitsInStock");
+                int UnitsOnOrder = rs.getInt("UnitsOnOrder");
+                int ReorderLevel = rs.getInt("ReorderLevel");
+                boolean Discontinued = rs.getBoolean("Discontinued");
+                // Khoi tao doi tuong kieu 'Product'
+                Product p = new Product(ProductID, ProductName, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued);
+                // Bo sung 'p' vao danh sach 'products'
+                products.add(p);
+            }
+        } catch (SQLException e) {
+        }
+        return products;
+    }
 
     public ArrayList<Product> getProductsHot() {
         ArrayList<Product> products = new ArrayList<Product>();
@@ -352,6 +384,6 @@ public class ProductDAO extends DBContext {
         return products;
     }
     public static void main(String[] args) {
-        System.out.println(new ProductDAO().getProductById(10));
+        System.out.println(new ProductDAO().SerachandFilter(1,""));
     }
 }

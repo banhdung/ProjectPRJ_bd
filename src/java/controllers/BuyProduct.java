@@ -54,13 +54,8 @@ public class BuyProduct extends HttpServlet {
             List<ItemCart> list = c.getItems();
             req.getSession().setAttribute("cart", c);
             double t;
-//            int as = 0;
-//            for (ItemCart ic : list) {
-//                as = ic.getProduct().getProductID();
-//            }
             t = c.getToltalMoney();
             req.getSession().setAttribute("t", t);
-//            req.getSession().setAttribute("as", as);
             req.getSession().setAttribute("size", list.size());
             req.getRequestDispatcher("cart.jsp").forward(req, resp);
         } catch (Exception e) {
