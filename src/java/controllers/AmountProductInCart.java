@@ -36,7 +36,6 @@ public class AmountProductInCart extends HttpServlet {
             if ((num == -1) && (sc.getQuantityById(id) == 1)) {
                 sc.removeItem(id);
             } else {
-
                 Product p = new ProductDAO().getProductById(id);
                 ItemCart t = new ItemCart(p, num, p.getUnitPrice());
                 sc.addItem(t);

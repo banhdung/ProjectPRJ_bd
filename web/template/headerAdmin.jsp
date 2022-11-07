@@ -15,7 +15,7 @@
     </head>
     <body>
         <c:if test="${sessionScope.role != 1}">
-            <%--<c:redirect url="errorPage.jsp"></c:redirect>--%>
+           <c:redirect url="errorPage.jsp"></c:redirect>
         </c:if>
         <div id="container">
             <div style="height:100px" id="header">

@@ -309,7 +309,7 @@ public class OrderDAO extends DBContext {
         return 0;
     }
 
-    public ArrayList<Order_Detail> getWeeklySaleByOrdDet() {
+    public ArrayList<Order_Detail> getWeeklySale() {
         ArrayList<Order_Detail> ord = new ArrayList<>();
         LocalDate curD = java.time.LocalDate.now();
         String date = curD.toString();
@@ -333,8 +333,33 @@ public class OrderDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
-
         return ord;
+        
     }
+    
+     public ArrayList<Order_Detail> getAllOrder_DetailsByPid(int productid) {
+        ArrayList<Order_Detail> ordetail = new ArrayList<>();
+
+        try {
+            String sql = "Select * from [Order Details] where ProductID= ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int OrderID = rs.getInt("OrderID");
+                int ProductID = rs.getInt("ProductID");
+                double UnitPrice = rs.getDouble("UnitPrice");
+                int Quantity = rs.getInt("Quantity");
+                double Discount = rs.getDouble("Discount");
+                Order_Detail ordt = new Order_Detail(OrderID, ProductID, UnitPrice, Quantity, Discount);
+                ordetail.add(ordt);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return ordetail;
+    }
+    
+    
 
 }

@@ -13,7 +13,9 @@
         <link rel="icon" type="image/x-icon" href="<%=request.getContextPath()%>/img/logo.png"> 
         <link href="<%=request.getContextPath()%>/css/style.css" rel="stylesheet"/>
     </head>    
-    
+    <c:if test="${sessionScope.role == 1}">
+        <c:redirect url="errorPage_1.jsp"></c:redirect>
+    </c:if>
 
     <body lang="vi">
         <div id="container">
@@ -21,8 +23,8 @@
                 <div id="logo">
                     <a href="<%=request.getContextPath()%>/home"><img src="<%=request.getContextPath()%>/img/logo.png"/></a>
                 </div>
-               
-                  
+
+
                 <c:if test="${category!=null}">
                     <div id="product-title-2" style="width: 100%;display: inline-block;padding-left: 30px;padding-top: 75px">
                         <form action="searchuser" method="get">
@@ -31,7 +33,7 @@
                         </form>
                     </div>   
                 </c:if>
-                
+
                 <div id="banner">
                     <ul>
                         <li><a  style="text-decoration: none" href="<%=request.getContextPath()%>/cart.jsp">Cart: ${size}</a></li>
@@ -43,8 +45,8 @@
                             <% }else{
                            
                             %>
-                           <li><a style="text-decoration: none" href="<%=request.getContextPath()%>/account/profile">Profile: <%=session.getAttribute("uname")%></a></li>
-                           <li><a style="text-decoration: none" href="<%=request.getContextPath()%>/account/signin?siginout=true">SignOut</a></li>
+                        <li><a style="text-decoration: none" href="<%=request.getContextPath()%>/account/profile">Profile: <%=session.getAttribute("uname")%></a></li>
+                        <li><a style="text-decoration: none" href="<%=request.getContextPath()%>/account/signin?siginout=true">SignOut</a></li>
                             <%
                                  }
                             %>

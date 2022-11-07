@@ -4,19 +4,17 @@
     double sum = 0 , sum1=0 ;
     for(Order_Detail o: od) {
         sum += (o.getUnitPrice() * o.getQuantity() * (1-o.getDiscount()));
-    }
-    DecimalFormat df = new DecimalFormat("$ #0.00"); 
-      
-    ArrayList<Order_Detail> odt = new OrderDAO().getWeeklySaleByOrdDet();
+    }   
+    ArrayList<Order_Detail> odt = new OrderDAO().getWeeklySale();
        for(Order_Detail o: odt) {
         sum1 += (o.getUnitPrice() * o.getQuantity() *(1-o.getDiscount()));
-    }
-    
+    }    
     int countCus = new CustomerDAO().getCountCustomer();
     int countGuest = countCus - new AccountDAO().getCountAccount() ;   
-    int countNewCusMonth = new CustomerDAO().getCountNewCusInOneMonth();
     request.setAttribute("odDAO",new OrderDAO());
+    DecimalFormat df = new DecimalFormat("$ #0.00"); 
 %>
+
 <c:set value="${year}" var="year"></c:set>
     <div id="content-right">
         <div class="path-admin">DASHBOARD</b></div>
@@ -116,3 +114,4 @@
     OrdersChart();
     CustomersChart();
 </script>
+

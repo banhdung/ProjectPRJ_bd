@@ -129,26 +129,9 @@ public class CustomerDAO extends DBContext {
             System.out.println(e);
         }
         return 0;
-    }
+    }  
     
-    
-    public int getCountNewCusInOneMonth() {
-        LocalDate curD = java.time.LocalDate.now();
-        String date = curD.toString();
-        try {
-            String sql = "select count(*) from Customers\n"
-                    + "where ? - Date < 30";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, date);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return 0;
-    }
+ 
     
     public static void main(String[] args) {
         Customer c = new Customer("dK2DK", "fbc", "h3", "h3", "abc");
